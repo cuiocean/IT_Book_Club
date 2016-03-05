@@ -4,6 +4,7 @@
 	var wordMorseSort = new Array();
 	var wordWinnerDash = new Array();
 	var wordWinnerDot = new Array();
+	var flag =0;
 	
 function generateValue(raw) {
 	var value;
@@ -113,10 +114,11 @@ function readTextFile(file)
     }
     rawFile.send(null);
 }
-function calculateword(word){
+function calculateword(word,flag){
 	var wordValue="";
 	var tester="";
 	if(word != null){
+	if(flag ==0){
 		for(var i=0;i<word.length;i++){
 		  for(var j=0; j<word[i].length;j++){
 			  wordValue += generateValue(word[i][j]);
@@ -126,7 +128,9 @@ function calculateword(word){
 			  wordValue ="";
 		}
 	 var longest = wordMorseSort.sort(function (a, b) { return b.length - a.length; })[0];
-	 var longestlength = longest.length;	
+	 var longestlength = longest.length;
+
+		document.write("<p>Question 1&2:</p>")
 		document.write("Longest DASH Winner:"+"<br>");		
 			for(var v=longestlength;v>0;v--){
 				tester=Array(v).join("1");
@@ -134,13 +138,13 @@ function calculateword(word){
 			  if(wordMorse[z].indexOf(tester)>-1){
 				  wordWinnerDash.push([z,wordMorse[z]]);
 			  document.write(wordsArray[z]+"<br>");
+			  document.write(tester.length+"<br>");
 			  }
 			  }
 			  if(wordWinnerDash.length != 0){
 				  break;
 			  }
-		}
-		
+		}		
 		document.write("Longest DOT Winner:"+"<br>");
 			for(var v=longestlength;v>0;v--){
 				tester=Array(v).join("0");
@@ -148,15 +152,54 @@ function calculateword(word){
 			  if(wordMorse[z].indexOf(tester)>-1){
 				  wordWinnerDot.push([z,wordMorse[z]]);
 			  document.write(wordsArray[z]+"<br>");
+			  document.write(tester.length+"<br>");
 			  }
 			  }
 			  if(wordWinnerDot.length != 0){
 				  break;
 			  }
 		}
+			 }
+	 else{
+		document.getElementById('result').value = "";	
+		var dash,dot;	
+		var missingCode="";
+		word=word.toLowerCase();		
+		for(var i=0;i<word.length;i++){
+			var code = generateValue(word[i]);
+			if(code != ""){
+				wordValue += code;
+			}
+			else{
+				missingCode+=word[i];				
+			}
+		}
+		if(missingCode.length>0){
+			alert("Opps...the letter "+missingCode+" is not in my translator..");
+			return;
+		}
+		var longestlength = wordValue.length;	 
+		 	for(var v=longestlength;v>0;v--){
+				tester=Array(v).join("1");
+			  if(wordValue.indexOf(tester)>-1){
+				 var dash = tester.length;
+				 break;
+			  }
+		}	
+		
+		 	for(var v=longestlength;v>0;v--){
+				tester=Array(v).join("0");
+			  if(wordValue.indexOf(tester)>-1){
+				 var dot = tester.length;
+				 break;
+			  }
+		}		
+		 document.getElementById('result').value = "Dash:"+dash+"\n"+"DOT:"+dot;		 
+	 }
 	}
 }
+
 function run(){
 	readTextFile("/ITReading/words.txt");
-	calculateword(wordsArray);
+	calculateword(wordsArray,0);
 }

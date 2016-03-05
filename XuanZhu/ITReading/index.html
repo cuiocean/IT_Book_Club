@@ -9,8 +9,20 @@
     <!-- The line below must be kept intact for Sencha Cmd to build your application -->
     <script type="text/javascript" src="Morse.js"></script>
 	<script type="text/javascript">
-	run();
+	run();	
+	
 	</script>
+	
 </head>
-<body></body>
+<body>
+<hr>
+Question 3:
+<p>Give me an English word: <input type="text" id="myText" value="Mickey"></p>
+
+<p>Click the button to see the longest occurrences of Dash and Dot in its Morse Code.</p>
+
+<button onclick="calculateword(document.getElementById('myText').value,1)">Try it</button>
+<p ><textarea type="text" id="result"></textarea></p>
+
+</body>
 </html>
